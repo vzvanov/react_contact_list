@@ -11,6 +11,8 @@ const NavigationBar = () => {
 
   const logOut = () => {
     user.setIsAuth(false);
+    contact.setLastPage(false);
+    contact.setPage(1);
   }
 
   const onChangeFind = (e) => {

@@ -22,15 +22,28 @@ const ContactList = () => {
       getParams.params.title_like = contact.findString;
     }
 
+    getParams.params._page = contact.page;
+    getParams.params._limit = contact.limit;
+
     getContacts(getParams)
       .then(data => {
         if (data instanceof Array) {
-          setContacts(data);
+          if (contact.page === 1 || data.length !== 0) {
+            setContacts(data);
+            if (data.length < contact.limit) {
+              contact.setLastPage(true);
+            } else {
+              contact.setLastPage(false);
+            }
+          } else {
+            contact.setLastPage(true);
+            contact.setPage(contact.page - 1);
+          }
         }
       })
       .catch((e) => alert(e.message))
       .finally(() => setLoading(false));
-  }, [contact.findString, contact.refresh]);
+  }, [contact.findString, contact.refresh, contact.page, contact.limit]);
 
   if (loading) {
     return <div
